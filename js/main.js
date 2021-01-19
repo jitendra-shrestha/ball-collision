@@ -23,7 +23,9 @@ class Ball {
       this.radius = Math.floor(MINRADIUS + Math.random()*(MAXRADIUS + 1 - MINRADIUS));
       this.color = generateRandomColor();
    }
-
+   /**
+    * Draws ball in the canvas
+    */
    draw = () => {
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
@@ -31,7 +33,9 @@ class Ball {
       ctx.fill();
       ctx.closePath();
    }
-
+   /**
+    * Checks the boundary collision
+    */
    changeValue = () => {
       this.x = this.x + this.directionx * SPEED;
       this.y = this.y + this.directiony * SPEED;
@@ -44,6 +48,10 @@ class Ball {
        }
    }
 }
+
+   /**
+    * generates random color
+    */
    let generateRandomColor = () => {
       var red = Math.floor(Math.random() * 255);
       var blue = Math.floor(Math.random() * 255);
@@ -52,11 +60,12 @@ class Ball {
       return `rgb(${red},${green},${blue})`
    }
 
+   
    /**
-    * Detectes the Collision and resolves
-    * @param  {Object} ball Current ballList
+    * detects collision
+    * @param  {object}     ball object
     */
-
+   
    let collisionDetection = (ball) => {
       for (newball in ballList) {
          if((ball.x != ballList[newball].x) && (ball.y != ballList[newball].y)){
@@ -74,6 +83,12 @@ class Ball {
       
    }
 
+   /**
+    * detects collision
+    * @param  {object}     ball object
+    * @return {boolean}    return true when colliding otherwise false
+    */
+  
    let isColliding = (ball) => {
       for (newball in ballList) {
         var dx = ball.x - ballList[newball].x;
@@ -89,6 +104,9 @@ class Ball {
       return false;
     }
 
+    /**
+     * calls all function 
+     */
 
    let animate = () =>{
       ctx.clearRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
@@ -96,17 +114,22 @@ class Ball {
          ball.changeValue();
          ball.draw();
          collisionDetection(ball);
-      });   
+      });  
+      
    }
 
    let ballList= [];
 
+   /**
+     * Generates random x and y
+     * Generates new ball object
+     */
    let render = () => {
       for (var i = 0; i < NO_OF_BALLS ; i++) {
 
          do{
-            x=Math.floor(Math.random() * CANVAS_WIDTH-MARGIN);
-            y=Math.floor(Math.random() * CANVAS_HEIGHT-MARGIN);
+            x=Math.floor(Math.random() * (CANVAS_WIDTH - MAXRADIUS *2)+ MAXRADIUS);
+            y=Math.floor(Math.random() * (CANVAS_WIDTH- MAXRADIUS *2)+ MAXRADIUS);
             var ball = new Ball(x,y);
          }while(isColliding(ball));
          ballList.push(ball);
@@ -117,6 +140,7 @@ class Ball {
 render();
 setInterval(animate, 1000 / 60);
 // animate();
+
 
 
 
